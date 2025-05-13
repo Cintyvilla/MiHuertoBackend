@@ -4,6 +4,7 @@ import { GetUrlMedia } from "#src/utils/utilsAttach.js";
 const schema = new Schema({
     nombre: String,
     descripcion: String,
+    descripcionLarga: String,
     clima: String,
     riego: String,
     tamaño: String,

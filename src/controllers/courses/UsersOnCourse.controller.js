@@ -14,9 +14,6 @@ export async function Get(req, res) {
             filter = CleanFilters(params);
         }
         const docs = await Model.find(filter).lean();
-        if (docs.length == 0) {
-            return res.status(404).json({ message: `No se encontró ninguna ${moduleEs}` });
-        }
         for (const doc of docs) {
             const progress = await calculateProgress(doc);
             doc.progreso = progress;

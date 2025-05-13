@@ -11,11 +11,15 @@ export async function Get(req, res) {
         var filter = {}
         if (Object.keys(req.query).length > 0) {
             filter = CleanFilters(params);
+            if ('fechaInicio_gte' in filter) {
+                const fechaInicio = filter["fechaInicio_gte"]
+                delete filter.fechaInicio_gte;
+                filter["fechaInicio"] = {
+                    $gte: fechaInicio
+                }   
+            }
         }
         const docs = await Model.find(filter).populate("imagen");
-        if (docs.length == 0) {
-            return res.status(404).json({ message: `No se encontró ninguna ${moduleEs}` });
-        }
         res.status(200).json(docs);
     } catch (err) {
         HandleErrorResponse(req, res, err, `Error consultando`);

@@ -5,6 +5,7 @@ import path from 'path'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import fileUpload from 'express-fileupload'
+import cors from "cors"
 
 import plantRouter from '#src/routes/plants.routes.js'
 import userRouter from '#src/routes/users.routes.js'
@@ -25,6 +26,7 @@ logger.token('error', function (req, res) {
 });
 
 // view engine setup
+app.use(cors())
 app.use(logger(':method :url :status :res[content-length] - :response-time ms error: :error'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
