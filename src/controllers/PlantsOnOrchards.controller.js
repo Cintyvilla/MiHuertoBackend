@@ -1,18 +1,23 @@
 import Model from '#src/database/models/plantOnOrchard.js'
 import { CleanFilters, HandleErrorResponse } from '#src/utils/utilsDB.js'
+import { Types } from 'mongoose'
 
 const moduleEs = "planta"
-
+const ObjectId  = Types.ObjectId
 
 export async function Get(req, res) {
     try {
         const params = req.query
         let docs = []
         if (params.plant) {
-            docs = await (await Model.populate("huerto")).select("-planta").find({planta: params.plant})
+            docs = await Model.find({
+                planta: new ObjectId(params.plant)
+            }).populate("huerto")
         }
         if (params.huerto) {
-            docs = await (await Model.populate("planta")).select("-huerto").find({huerto: params.huerto})
+            docs = await Model.find({
+                huerto: new ObjectId(params.huerto)
+            }).populate("planta")
         }
         if (!params.plant && !params.huerto) {
             docs = await Model.find().populate("planta").populate("huerto")
